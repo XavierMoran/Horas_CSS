@@ -1,0 +1,15 @@
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\bin\Debug\net10.0\CDMYPE.CitasMedicas.Application.deps.json
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\bin\Debug\net10.0\CDMYPE.CitasMedicas.Application.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\bin\Debug\net10.0\CDMYPE.CitasMedicas.Application.pdb
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\bin\Debug\net10.0\CDMYPE.CitasMedicas.Domain.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\bin\Debug\net10.0\CDMYPE.CitasMedicas.Domain.pdb
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.csproj.AssemblyReference.cache
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.AssemblyInfoInputs.cache
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.AssemblyInfo.cs
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.csproj.CoreCompileInputs.cache
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.C.8A2C93CE.Up2Date
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\refint\CDMYPE.CitasMedicas.Application.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\CDMYPE.CitasMedicas.Application.pdb
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Application\obj\Debug\net10.0\ref\CDMYPE.CitasMedicas.Application.dll

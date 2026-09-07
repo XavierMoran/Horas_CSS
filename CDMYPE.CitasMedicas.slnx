@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CDMYPE.CitasMedicas.Application/CDMYPE.CitasMedicas.Application.csproj" />
+  <Project Path="CDMYPE.CitasMedicas.Domain/CDMYPE.CitasMedicas.Domain.csproj" />
+  <Project Path="CDMYPE.CitasMedicas.Infrastructure/CDMYPE.CitasMedicas.Infrastructure.csproj" />
+  <Project Path="CDMYPE.CitasMedicas.WinForms/CDMYPE.CitasMedicas.WinForms.csproj" />
+</Solution>
