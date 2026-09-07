@@ -17,3 +17,4 @@ C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Infrastructure\obj\Debug\ne
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Infrastructure\obj\Debug\net10.0\CDMYPE.CitasMedicas.Infrastructure.pdb
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Infrastructure\obj\Debug\net10.0\CDMYPE.CitasMedicas.Infrastructure.genruntimeconfig.cache
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Infrastructure\obj\Debug\net10.0\ref\CDMYPE.CitasMedicas.Infrastructure.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.Infrastructure\obj\Debug\net10.0\CDMYPE.CitasMedicas.Infrastructure.sourcelink.json

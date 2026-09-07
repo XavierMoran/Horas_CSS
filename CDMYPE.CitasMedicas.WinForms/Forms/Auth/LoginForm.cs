@@ -1,4 +1,5 @@
 using CDMYPE.CitasMedicas.Application.Services;
+using CDMYPE.CitasMedicas.WinForms.Forms.Main;
 
 namespace CDMYPE.CitasMedicas.WinForms.Forms.Auth;
 
@@ -10,10 +11,12 @@ public class LoginForm : Form
     private readonly TextBox txtPassword;
     private readonly Button btnIngresar;
     private readonly Label lblError;
+    private readonly PacienteService _pacienteService;
 
-    public LoginForm(UsuarioService usuarioService)
+    public LoginForm(UsuarioService usuarioService, PacienteService pacienteService)
     {
         _usuarioService = usuarioService;
+        _pacienteService = pacienteService;
 
         Text = "Sistema de Gestión de Citas Médicas";
         StartPosition = FormStartPosition.CenterScreen;
@@ -169,12 +172,17 @@ public class LoginForm : Form
                 return;
             }
 
-            MessageBox.Show(
-                $"Bienvenido, {usuarioAutenticado.NombreCompleto}.",
-                "Inicio de sesión correcto",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
+            var mainForm = new MainForm(usuarioAutenticado, _pacienteService);
+
+            Hide();
+
+            mainForm.ShowDialog();
+
+            Show();
+
+            txtPassword.Clear();
+            txtPassword.Focus();        }
+            
         catch (Exception)
         {
             MostrarError(

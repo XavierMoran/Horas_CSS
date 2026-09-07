@@ -83,3 +83,4 @@ C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.WinForms\bin\Debug\net10.0-
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Diagnostics.Abstractions.dll
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Identity.Core.dll
 C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.WinForms\bin\Debug\net10.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\xmora\Desktop\Horas_CSS\CDMYPE.CitasMedicas.WinForms\obj\Debug\net10.0-windows\CDMYPE.CitasMedicas.WinForms.sourcelink.json

@@ -6,6 +6,8 @@ using CDMYPE.CitasMedicas.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using CDMYPE.CitasMedicas.WinForms.Forms.Auth;
+using CDMYPE.CitasMedicas.WinForms.Forms.Main;
+using CDMYPE.CitasMedicas.WinForms.Forms.Pacientes;
 
 namespace CDMYPE.CitasMedicas.WinForms;
 
@@ -23,11 +25,15 @@ internal static class Program
                 @"Server=localhost\SQLEXPRESS;Database=CDMYPE_CitasMedicas;Trusted_Connection=True;TrustServerCertificate=True;"));
 
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
+        services.AddScoped<IPacienteRepository, PacienteRepository>();
+        
         services.AddScoped<PasswordService>();
+
         services.AddScoped<UsuarioService>();
+        services.AddScoped<PacienteService>();
 
         services.AddTransient<LoginForm>();
+        services.AddTransient<MainForm>();
 
         using var serviceProvider = services.BuildServiceProvider();
 
