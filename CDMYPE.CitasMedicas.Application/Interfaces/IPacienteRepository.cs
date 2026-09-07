@@ -15,4 +15,8 @@ public interface IPacienteRepository
     Task AgregarAsync(Paciente paciente);
 
     Task GuardarCambiosAsync();
+
+    Task<List<Paciente>> ObtenerInactivosAsync();
+
+    Task<List<Paciente>> ObtenerTodosIncluyendoInactivosAsync();
 }

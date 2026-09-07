@@ -6,11 +6,14 @@ namespace CDMYPE.CitasMedicas.WinForms.Forms.Pacientes;
 public class PacientesForm : Form
 {
     private readonly PacienteService _pacienteService;
+    private readonly ComboBox cmbEstado;
 
     private readonly DataGridView dgvPacientes;
     private readonly TextBox txtBuscar;
     private readonly Button btnNuevo;
+    private readonly Button btnEditar;
     private readonly Label lblTotal;
+    private readonly Button btnDesactivar;
 
     public PacientesForm(PacienteService pacienteService)
     {
@@ -50,6 +53,29 @@ public class PacientesForm : Form
 
         txtBuscar.TextChanged += TxtBuscar_TextChanged;
 
+        cmbEstado = new ComboBox
+        {
+            Location = new Point(480, 125),
+            Width = 120,
+            Height = 34,
+            Font = new Font("Segoe UI", 10),
+            DropDownStyle = ComboBoxStyle.DropDownList
+        };
+
+        cmbEstado.Items.AddRange(new object[]
+        {
+            "Activos",
+            "Inactivos",
+            "Todos"
+        });
+
+        cmbEstado.SelectedIndex = 0;
+
+        cmbEstado.SelectedIndexChanged += async (_, _) =>
+        {
+            await CargarPacientesAsync(txtBuscar.Text);
+        };
+
         btnNuevo = new Button
         {
             Text = "Nuevo paciente",
@@ -63,7 +89,51 @@ public class PacientesForm : Form
             Cursor = Cursors.Hand
         };
 
+        btnDesactivar = new Button
+        {
+            Text = "Desactivar",
+            Font = new Font("Segoe UI", 10),
+            Width = 130,
+            Height = 36,
+            Location = new Point(810, 123),
+            FlatStyle = FlatStyle.Flat,
+            BackColor = Color.White,
+            ForeColor = Color.Firebrick,
+            Cursor = Cursors.Hand
+        };
+
+        btnDesactivar.FlatAppearance.BorderColor =
+            Color.FromArgb(180, 80, 80);
+
+        btnDesactivar.Click += BtnDesactivar_Click;
+
+        btnEditar = new Button
+        {
+            Text = "Editar paciente",
+            Font = new Font(
+                "Segoe UI",
+                10,
+                FontStyle.Regular),
+
+            Width = 150,
+            Height = 36,
+
+            Location = new Point(645, 123),
+
+            FlatStyle = FlatStyle.Flat,
+            BackColor = Color.White,
+            ForeColor = Color.FromArgb(31, 41, 55),
+
+            Cursor = Cursors.Hand
+        };
+
+        btnEditar.FlatAppearance.BorderColor =
+            Color.FromArgb(156, 163, 175);
+
+        btnEditar.Click += BtnEditar_Click;
+
         btnNuevo.FlatAppearance.BorderSize = 0;
+        btnNuevo.Click += BtnNuevo_Click;
 
         lblTotal = new Label
         {
@@ -116,12 +186,27 @@ public class PacientesForm : Form
 
         ConfigurarColumnas();
 
+        cmbEstado.Location = new Point(43, 165);
+        cmbEstado.Width = 150;
+
+        lblTotal.Location = new Point(210, 170);
+
+        dgvPacientes.Location = new Point(43, 210);
+
+        dgvPacientes.SelectionChanged += (_, _) =>
+        {
+            ActualizarBotonEstado();
+        };
+
         Controls.Add(lblTitulo);
         Controls.Add(lblDescripcion);
         Controls.Add(txtBuscar);
         Controls.Add(btnNuevo);
         Controls.Add(lblTotal);
         Controls.Add(dgvPacientes);
+        Controls.Add(btnEditar);
+        Controls.Add(btnDesactivar);
+        Controls.Add(cmbEstado);
 
         Load += PacientesForm_Load;
 
@@ -137,59 +222,82 @@ public class PacientesForm : Form
 
     private void ConfigurarColumnas()
     {
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Nombre completo",
-            DataPropertyName = "NombreCompleto",
-            Width = 280,
-            MinimumWidth = 200
-        });
+        
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                Name = "PacienteId",
+                DataPropertyName = "PacienteId",
+                Visible = false
+            });
 
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Documento",
-            DataPropertyName = "DocumentoCompleto",
-            Width = 190,
-            MinimumWidth = 150
-        });
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                Name = "Activo",
+                DataPropertyName = "Activo",
+                Visible = false
+            });
 
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Sexo",
-            DataPropertyName = "Sexo",
-            Width = 100,
-            MinimumWidth = 80
-        });
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                Name = "NombreCompleto",
+                HeaderText = "Nombre completo",
+                DataPropertyName = "NombreCompleto",
+                Width = 280,
+                MinimumWidth = 250
+            });
 
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Edad",
-            DataPropertyName = "Edad",
-            Width = 80,
-            MinimumWidth = 70
-        });
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Documento",
+                DataPropertyName = "DocumentoCompleto",
+                Width = 190,
+                MinimumWidth = 150
+            });
 
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Nacionalidad",
-            DataPropertyName = "Nacionalidad",
-            Width = 170,
-            MinimumWidth = 130
-        });
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Sexo",
+                DataPropertyName = "Sexo",
+                Width = 100,
+                MinimumWidth = 80
+            });
 
-        dgvPacientes.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Teléfono",
-            DataPropertyName = "Telefono",
-            Width = 150,
-            MinimumWidth = 120
-        });
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Edad",
+                DataPropertyName = "Edad",
+                Width = 80,
+                MinimumWidth = 70
+            });
 
-        dgvPacientes.Columns[0].AutoSizeMode =
-            DataGridViewAutoSizeColumnMode.Fill;
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Nacionalidad",
+                DataPropertyName = "Nacionalidad",
+                Width = 170,
+                MinimumWidth = 130
+            });
 
-        dgvPacientes.Columns[0].MinimumWidth = 250;
-    }   
+        dgvPacientes.Columns.Add(
+            new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Teléfono",
+                DataPropertyName = "Telefono",
+                Width = 150,
+                MinimumWidth = 120
+            });
+
+        dgvPacientes.Columns["NombreCompleto"]!
+            .AutoSizeMode =
+                DataGridViewAutoSizeColumnMode.Fill;
+    }
 
     private async void PacientesForm_Load(
         object? sender,
@@ -212,12 +320,40 @@ public class PacientesForm : Form
         {
             List<Paciente> pacientes;
 
+            var estadoSeleccionado =
+                cmbEstado.SelectedItem?.ToString() ?? "Activos";
+
             if (string.IsNullOrWhiteSpace(busqueda))
-                pacientes =
-                    await _pacienteService.ObtenerTodosAsync();
+            {
+                pacientes = estadoSeleccionado switch
+                {
+                    "Inactivos" =>
+                        await _pacienteService.ObtenerInactivosAsync(),
+
+                    "Todos" =>
+                        await _pacienteService.ObtenerTodosIncluyendoInactivosAsync(),
+
+                    _ =>
+                        await _pacienteService.ObtenerTodosAsync()
+                };
+            }
             else
+            {
                 pacientes =
                     await _pacienteService.BuscarAsync(busqueda);
+
+                pacientes = estadoSeleccionado switch
+                {
+                    "Inactivos" =>
+                        pacientes.Where(x => !x.Activo).ToList(),
+
+                    "Todos" =>
+                        pacientes,
+
+                    _ =>
+                        pacientes.Where(x => x.Activo).ToList()
+                };
+            }
 
             var datos = pacientes.Select(p => new
             {
@@ -235,15 +371,20 @@ public class PacientesForm : Form
 
                 p.Nacionalidad,
 
-                p.Telefono
+                p.Telefono,
+
+                p.Activo
             }).ToList();
 
             dgvPacientes.DataSource = datos;
 
             lblTotal.Text =
-                datos.Count == 1
-                    ? "1 paciente"
-                    : $"{datos.Count} pacientes";
+                $"{pacientes.Count} " +
+                (pacientes.Count == 1
+                    ? "paciente"
+                    : "pacientes");
+
+            ActualizarBotonEstado();
         }
         catch (Exception ex)
         {
@@ -265,5 +406,195 @@ public class PacientesForm : Form
             edad--;
 
         return edad;
+    }
+
+    private void ActualizarBotonEstado()
+    {
+        if (dgvPacientes.SelectedRows.Count == 0)
+        {
+            btnDesactivar.Text = "Desactivar";
+            return;
+        }
+
+        var valorActivo =
+            dgvPacientes
+                .SelectedRows[0]
+                .Cells["Activo"]
+                .Value;
+
+        if (valorActivo is null)
+            return;
+
+        var activo =
+            Convert.ToBoolean(valorActivo);
+
+        btnDesactivar.Text =
+            activo
+                ? "Desactivar"
+                : "Reactivar";
+
+        btnDesactivar.ForeColor =
+            activo
+                ? Color.Firebrick
+                : Color.FromArgb(31, 41, 55);
+    }
+
+    private async void BtnNuevo_Click(
+    object? sender,
+    EventArgs e)
+    {
+        using var pacienteForm =
+            new PacienteForm(_pacienteService);
+
+        var resultado =
+            pacienteForm.ShowDialog(this);
+
+        if (resultado == DialogResult.OK)
+        {
+            txtBuscar.Clear();
+            await CargarPacientesAsync();
+        }
+    }
+
+    private async void BtnEditar_Click(
+        object? sender,
+        EventArgs e)
+    {
+        if (dgvPacientes.SelectedRows.Count == 0)
+        {
+            MessageBox.Show(
+                "Seleccione un paciente para editar.",
+                "Pacientes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return;
+        }
+
+        var pacienteId =
+            Convert.ToInt32(
+                dgvPacientes
+                    .SelectedRows[0]
+                    .Cells["PacienteId"]
+                    .Value);
+
+        var paciente =
+            await _pacienteService
+                .ObtenerPorIdAsync(pacienteId);
+
+        if (paciente is null)
+        {
+            MessageBox.Show(
+                "No fue posible encontrar el paciente.",
+                "Pacientes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            return;
+        }
+
+        using var pacienteForm =
+            new PacienteForm(
+                _pacienteService,
+                paciente);
+
+        if (pacienteForm.ShowDialog(this)
+            == DialogResult.OK)
+        {
+            await CargarPacientesAsync();
+        }
+    }
+
+    private async void BtnDesactivar_Click(
+        object? sender,
+        EventArgs e)
+    {
+        if (dgvPacientes.SelectedRows.Count == 0)
+        {
+            MessageBox.Show(
+                "Seleccione un paciente.",
+                "Pacientes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return;
+        }
+
+        var pacienteId =
+            Convert.ToInt32(
+                dgvPacientes
+                    .SelectedRows[0]
+                    .Cells["PacienteId"]
+                    .Value);
+
+        var paciente =
+            await _pacienteService
+                .ObtenerPorIdAsync(pacienteId);
+
+        if (paciente is null)
+        {
+            MessageBox.Show(
+                "No fue posible encontrar el paciente.",
+                "Pacientes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+
+            return;
+        }
+
+        var accion =
+            paciente.Activo
+                ? "desactivar"
+                : "reactivar";
+
+        var mensaje = paciente.Activo
+            ? $"¿Desea desactivar a {paciente.Nombres} {paciente.Apellidos}?\n\n" +
+            "El paciente dejará de estar disponible para nuevas citas, " +
+            "pero se conservará su historial."
+            : $"¿Desea reactivar a {paciente.Nombres} {paciente.Apellidos}?\n\n" +
+            "El paciente volverá a estar disponible para nuevas citas.";
+
+        var respuesta = MessageBox.Show(
+            mensaje,
+            paciente.Activo
+                ? "Desactivar paciente"
+                : "Reactivar paciente",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question);
+
+        if (respuesta != DialogResult.Yes)
+            return;
+
+        try
+        {
+            if (paciente.Activo)
+            {
+                await _pacienteService
+                    .DesactivarPacienteAsync(paciente);
+            }
+            else
+            {
+                await _pacienteService
+                    .ReactivarPacienteAsync(paciente);
+            }
+
+            await CargarPacientesAsync(txtBuscar.Text);
+
+            MessageBox.Show(
+                paciente.Activo
+                    ? "El paciente fue reactivado correctamente."
+                    : "El paciente fue desactivado correctamente.",
+                "Pacientes",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"No fue posible {accion} el paciente.\n\n{ex.Message}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
     }
 }

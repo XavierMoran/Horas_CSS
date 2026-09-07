@@ -27,8 +27,7 @@ public class PacienteRepository : IPacienteRepository
     {
         return await _context.Pacientes
             .FirstOrDefaultAsync(x =>
-                x.PacienteId == pacienteId &&
-                x.Activo);
+                x.PacienteId == pacienteId);
     }
 
     public async Task<Paciente?> ObtenerPorDocumentoAsync(
@@ -43,12 +42,9 @@ public class PacienteRepository : IPacienteRepository
     {
         return await _context.Pacientes
             .Where(x =>
-                x.Activo &&
-                (
-                    x.Nombres.Contains(texto) ||
-                    x.Apellidos.Contains(texto) ||
-                    x.NumeroDocumento.Contains(texto)
-                ))
+                x.Nombres.Contains(texto) ||
+                x.Apellidos.Contains(texto) ||
+                x.NumeroDocumento.Contains(texto))            
             .OrderBy(x => x.Apellidos)
             .ThenBy(x => x.Nombres)
             .ToListAsync();
@@ -63,4 +59,23 @@ public class PacienteRepository : IPacienteRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public async Task<List<Paciente>> ObtenerInactivosAsync()
+    {
+        return await _context.Pacientes
+            .Where(x => !x.Activo)
+            .OrderBy(x => x.Apellidos)
+            .ThenBy(x => x.Nombres)
+            .ToListAsync();
+    }
+
+    public async Task<List<Paciente>> ObtenerTodosIncluyendoInactivosAsync()
+    {
+        return await _context.Pacientes
+            .OrderByDescending(x => x.Activo)
+            .ThenBy(x => x.Apellidos)
+            .ThenBy(x => x.Nombres)
+            .ToListAsync();
+    }
+
 }

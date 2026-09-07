@@ -25,6 +25,20 @@ public class PacienteService
         return await _pacienteRepository.BuscarAsync(texto.Trim());
     }
 
+    public async Task<Paciente?> ObtenerPorIdAsync(
+        int pacienteId)
+    {
+        return await _pacienteRepository
+            .ObtenerPorIdAsync(pacienteId);
+    }
+
+    public async Task DesactivarPacienteAsync(Paciente paciente)
+    {
+        paciente.Activo = false;
+
+        await _pacienteRepository.GuardarCambiosAsync();
+    }
+
     public async Task<Paciente> CrearPacienteAsync(
         string nombres,
         string apellidos,
@@ -115,4 +129,22 @@ public class PacienteService
 
         await _pacienteRepository.GuardarCambiosAsync();
     }
+
+    public async Task<List<Paciente>> ObtenerInactivosAsync()
+    {
+        return await _pacienteRepository.ObtenerInactivosAsync();
+    }
+
+    public async Task<List<Paciente>> ObtenerTodosIncluyendoInactivosAsync()
+    {
+        return await _pacienteRepository.ObtenerTodosIncluyendoInactivosAsync();
+    }
+
+    public async Task ReactivarPacienteAsync(Paciente paciente)
+    {
+        paciente.Activo = true;
+
+        await _pacienteRepository.GuardarCambiosAsync();
+    }
+
 }

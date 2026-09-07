@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CDMYPE.CitasMedicas.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bee3b06447cd070898ae1435cbbcb3e515e219f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e6e24ebf6fa8cde169783d5d9e63c5effec36b6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CDMYPE.CitasMedicas.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CDMYPE.CitasMedicas.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
