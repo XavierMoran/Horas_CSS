@@ -9,18 +9,20 @@ public class LoginForm : Form
     private readonly PacienteService _pacienteService;
     private readonly ProfesionalService _profesionalService;
     private readonly EspecialidadService _especialidadService;
+    private readonly HorarioProfesionalService _horarioProfesionalService;
 
     private readonly TextBox txtUsuario;
     private readonly TextBox txtPassword;
     private readonly Button btnIngresar;
     private readonly Label lblError;
 
-    public LoginForm(UsuarioService usuarioService, PacienteService pacienteService, ProfesionalService profesionalService, EspecialidadService especialidadService)
+    public LoginForm(UsuarioService usuarioService, PacienteService pacienteService, ProfesionalService profesionalService, EspecialidadService especialidadService, HorarioProfesionalService horarioProfesionalService)
     {
         _usuarioService = usuarioService;
         _pacienteService = pacienteService;
         _profesionalService = profesionalService;
         _especialidadService = especialidadService;
+        _horarioProfesionalService = horarioProfesionalService;
 
         Text = "Sistema de Gestión de Citas Médicas";
         StartPosition = FormStartPosition.CenterScreen;
@@ -176,7 +178,7 @@ public class LoginForm : Form
                 return;
             }
 
-            var mainForm = new MainForm(usuarioAutenticado, _pacienteService, _profesionalService, _especialidadService);
+            var mainForm = new MainForm(usuarioAutenticado, _pacienteService, _profesionalService, _especialidadService, _horarioProfesionalService);
 
             Hide();
 

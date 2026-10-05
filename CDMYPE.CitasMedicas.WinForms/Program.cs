@@ -24,10 +24,15 @@ internal static class Program
             options.UseSqlServer(
                 @"Server=localhost\SQLEXPRESS;Database=CDMYPE_CitasMedicas;Trusted_Connection=True;TrustServerCertificate=True;"));
 
+        services.AddDbContextFactory<ApplicationDbContext>(options =>
+            options.UseSqlServer(
+                @"Server=localhost\SQLEXPRESS;Database=CDMYPE_CitasMedicas;Trusted_Connection=True;TrustServerCertificate=True;"));
+
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IProfesionalRepository, ProfesionalRepository>();
         services.AddScoped<IEspecialidadRepository, EspecialidadRepository>();
+        services.AddScoped<IHorarioProfesionalRepository, HorarioProfesionalRepository>();
 
         services.AddScoped<PasswordService>();
 
@@ -35,6 +40,7 @@ internal static class Program
         services.AddScoped<PacienteService>();
         services.AddScoped<ProfesionalService>();
         services.AddScoped<EspecialidadService>();
+        services.AddScoped<HorarioProfesionalService>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();

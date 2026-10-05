@@ -12,6 +12,7 @@ public class MainForm : Form
     private readonly PacienteService _pacienteService;
     private readonly ProfesionalService _profesionalService;
     private readonly EspecialidadService _especialidadService;
+    private readonly HorarioProfesionalService _horarioProfesionalService;
 
     private readonly Panel panelMenu;
     private readonly Panel panelContenido;
@@ -22,12 +23,14 @@ public class MainForm : Form
         Usuario usuario,
         PacienteService pacienteService,
         ProfesionalService profesionalService,
-        EspecialidadService especialidadService)
+        EspecialidadService especialidadService,
+        HorarioProfesionalService horarioProfesionalService)
     {
         _usuario = usuario;
         _pacienteService = pacienteService;
         _profesionalService = profesionalService;
         _especialidadService = especialidadService;
+        _horarioProfesionalService = horarioProfesionalService;
 
         Text = "Sistema de Gestión de Citas Médicas";
         WindowState = FormWindowState.Maximized;
@@ -313,11 +316,12 @@ public class MainForm : Form
         var profesionalesForm =
             new ProfesionalesForm(
                 _profesionalService,
-                _especialidadService);
+                _especialidadService,
+                _horarioProfesionalService);
 
-        panelContenido.Controls.Add(
-            profesionalesForm);
+        panelContenido.Controls.Add(profesionalesForm);
 
         profesionalesForm.Show();
-    }    
+    }
+
 }

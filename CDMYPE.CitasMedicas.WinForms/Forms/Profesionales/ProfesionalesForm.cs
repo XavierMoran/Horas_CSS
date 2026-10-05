@@ -7,6 +7,7 @@ public class ProfesionalesForm : Form
 {
     private readonly ProfesionalService _profesionalService;
     private readonly EspecialidadService _especialidadService;
+    private readonly HorarioProfesionalService _horarioProfesionalService;
 
     private readonly TextBox txtBuscar;
     private readonly ComboBox cmbEstado;
@@ -14,15 +15,17 @@ public class ProfesionalesForm : Form
     private readonly Button btnNuevo;
     private readonly Button btnEditar;
     private readonly Button btnDesactivar;
+    private readonly Button btnHorarios;
 
     private readonly Label lblTotal;
     private readonly DataGridView dgvProfesionales;
 
     public ProfesionalesForm(
-        ProfesionalService profesionalService, EspecialidadService especialidadService)
+        ProfesionalService profesionalService, EspecialidadService especialidadService, HorarioProfesionalService horarioProfesionalService)
     {
         _profesionalService = profesionalService;
         _especialidadService = especialidadService;
+        _horarioProfesionalService = horarioProfesionalService;
 
         FormBorderStyle = FormBorderStyle.None;
         TopLevel = false;
@@ -157,7 +160,7 @@ public class ProfesionalesForm : Form
             Width = 130,
             Height = 36,
 
-            Location = new Point(810, 123),
+            Location = new Point(935, 123),
 
             FlatStyle = FlatStyle.Flat,
 
@@ -171,6 +174,42 @@ public class ProfesionalesForm : Form
             Color.FromArgb(180, 80, 80);
 
         btnDesactivar.Click += BtnDesactivar_Click;
+
+        // ==========================================
+        // BOTÓN HORARIOS
+        // ==========================================
+
+        btnHorarios = new Button
+        {
+            Text = "Horarios",
+
+            Font = new Font(
+                "Segoe UI",
+                10,
+                FontStyle.Regular),
+
+            Width = 110,
+            Height = 36,
+
+            Location = new Point(810, 123),
+
+            FlatStyle = FlatStyle.Flat,
+
+            BackColor = Color.White,
+
+            ForeColor =
+                Color.FromArgb(31, 41, 55),
+
+            Cursor = Cursors.Hand,
+
+            Enabled = false
+        };
+
+        btnHorarios.FlatAppearance.BorderColor =
+            Color.FromArgb(156, 163, 175);
+
+        btnHorarios.Click += BtnHorarios_Click;
+
 
         // ==========================================
         // FILTRO DE ESTADO
@@ -205,6 +244,7 @@ public class ProfesionalesForm : Form
                 await CargarProfesionalesAsync(
                     txtBuscar.Text);
             };
+
 
         // ==========================================
         // CONTADOR
@@ -297,6 +337,7 @@ public class ProfesionalesForm : Form
 
         Controls.Add(btnNuevo);
         Controls.Add(btnEditar);
+        Controls.Add(btnHorarios);
         Controls.Add(btnDesactivar);
 
         Controls.Add(cmbEstado);
@@ -720,7 +761,70 @@ public class ProfesionalesForm : Form
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
-    }    
+    }
+
+    private async void BtnHorarios_Click(
+        object? sender,
+        EventArgs e)
+    {
+        if (dgvProfesionales.SelectedRows.Count == 0)
+        {
+            MessageBox.Show(
+                "Seleccione un profesional para administrar sus horarios.",
+                "Horarios",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return;
+        }
+
+        try
+        {
+            var valorId =
+                dgvProfesionales.SelectedRows[0]
+                    .Cells["ProfesionalId"]
+                    .Value;
+
+            if (valorId is null)
+            {
+                return;
+            }
+
+            var profesionalId =
+                Convert.ToInt32(valorId);
+
+            var profesional =
+                await _profesionalService
+                    .ObtenerPorIdAsync(
+                        profesionalId);
+
+            if (profesional is null)
+            {
+                MessageBox.Show(
+                    "No fue posible encontrar el profesional seleccionado.",
+                    "Profesional no encontrado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            using var formulario =
+                new HorariosProfesionalForm(
+                    _horarioProfesionalService,
+                    profesional);
+
+            formulario.ShowDialog(this);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"No fue posible abrir los horarios del profesional.\n\n{ex.Message}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+    }
 
     private void ActualizarBotonEstado()
     {
@@ -728,15 +832,13 @@ public class ProfesionalesForm : Form
             dgvProfesionales.SelectedRows.Count > 0;
 
         btnEditar.Enabled = haySeleccion;
+        btnHorarios.Enabled = haySeleccion;
         btnDesactivar.Enabled = haySeleccion;
 
         if (!haySeleccion)
         {
-            btnDesactivar.Text =
-                "Desactivar";
-
-            btnDesactivar.ForeColor =
-                Color.Gray;
+            btnDesactivar.Text = "Desactivar";
+            btnDesactivar.ForeColor = Color.Firebrick;
 
             return;
         }
@@ -750,6 +852,7 @@ public class ProfesionalesForm : Form
         if (valorActivo is null)
         {
             btnEditar.Enabled = false;
+            btnHorarios.Enabled = false;
             btnDesactivar.Enabled = false;
 
             return;
