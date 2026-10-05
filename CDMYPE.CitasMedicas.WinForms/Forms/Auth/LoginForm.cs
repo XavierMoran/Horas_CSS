@@ -6,17 +6,21 @@ namespace CDMYPE.CitasMedicas.WinForms.Forms.Auth;
 public class LoginForm : Form
 {
     private readonly UsuarioService _usuarioService;
+    private readonly PacienteService _pacienteService;
+    private readonly ProfesionalService _profesionalService;
+    private readonly EspecialidadService _especialidadService;
 
     private readonly TextBox txtUsuario;
     private readonly TextBox txtPassword;
     private readonly Button btnIngresar;
     private readonly Label lblError;
-    private readonly PacienteService _pacienteService;
 
-    public LoginForm(UsuarioService usuarioService, PacienteService pacienteService)
+    public LoginForm(UsuarioService usuarioService, PacienteService pacienteService, ProfesionalService profesionalService, EspecialidadService especialidadService)
     {
         _usuarioService = usuarioService;
         _pacienteService = pacienteService;
+        _profesionalService = profesionalService;
+        _especialidadService = especialidadService;
 
         Text = "Sistema de Gestión de Citas Médicas";
         StartPosition = FormStartPosition.CenterScreen;
@@ -172,7 +176,7 @@ public class LoginForm : Form
                 return;
             }
 
-            var mainForm = new MainForm(usuarioAutenticado, _pacienteService);
+            var mainForm = new MainForm(usuarioAutenticado, _pacienteService, _profesionalService, _especialidadService);
 
             Hide();
 

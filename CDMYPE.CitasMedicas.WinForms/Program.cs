@@ -26,11 +26,15 @@ internal static class Program
 
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IPacienteRepository, PacienteRepository>();
-        
+        services.AddScoped<IProfesionalRepository, ProfesionalRepository>();
+        services.AddScoped<IEspecialidadRepository, EspecialidadRepository>();
+
         services.AddScoped<PasswordService>();
 
         services.AddScoped<UsuarioService>();
         services.AddScoped<PacienteService>();
+        services.AddScoped<ProfesionalService>();
+        services.AddScoped<EspecialidadService>();
 
         services.AddTransient<LoginForm>();
         services.AddTransient<MainForm>();
